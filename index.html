@@ -149,6 +149,36 @@ button{
   .fashion-grid{grid-template-columns:1fr 1fr}
   .fashion-card{height:20vh;min-height:125px}
 }
+
+/* Imágenes complementarias para diapositivas con espacio visual */
+.visual-side{
+  display:flex;flex-direction:column;gap:12px;
+}
+.visual-side img{
+  width:100%;height:22vh;min-height:135px;object-fit:cover;border-radius:24px;
+  border:1px solid rgba(255,255,255,.1);box-shadow:0 18px 55px rgba(0,0,0,.3);
+}
+.visual-caption{
+  background:rgba(255,255,255,.055);border:1px solid rgba(255,255,255,.09);
+  border-radius:18px;padding:14px 16px;
+}
+.visual-caption strong{font-family:"Space Grotesk";font-size:17px;display:block;margin-bottom:4px}
+.visual-caption span{font-size:12px;color:#aeb1ba;line-height:1.35}
+.visual-stack{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.visual-stack .mini{
+  position:relative;height:17vh;min-height:115px;overflow:hidden;border-radius:18px;
+  border:1px solid rgba(255,255,255,.1);
+}
+.visual-stack .mini img{width:100%;height:100%;object-fit:cover;display:block}
+.visual-stack .mini::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 35%,rgba(0,0,0,.82))}
+.visual-stack .mini b{
+  position:absolute;z-index:2;bottom:10px;left:12px;font-family:"Space Grotesk";
+  font-size:14px;color:#fff;
+}
+@media(max-width:800px){
+  .visual-side img{height:22vh}
+  .visual-stack .mini{height:16vh}
+}
 </style>
 </head>
 <body>
@@ -215,6 +245,7 @@ button{
 <!-- 5 -->
 <section class="slide"><div class="grid"></div><div class="layout">
   <div class="top"><div class="kicker">04 · Redes</div><div class="num">05 / 22</div></div>
+  <img class="image" style="position:absolute;right:6vw;bottom:8vh;width:24vw;height:18vh;opacity:.30;z-index:0;object-position:center;" src="https://images.unsplash.com/photo-1611162617474-5b21e879e113?auto=format&fit=crop&w=1000&q=85" alt="Redes sociales y smartphone">
   <div class="columns">
     <div class="statbox"><div class="bigstat">4h 50m</div><div class="label">promedio diario de uso de redes sociales entre Gen Z en el estudio UFASTA 2025.</div><div class="source">UFASTA · 4.300 encuestas · 24 provincias</div></div>
     <div>
@@ -316,6 +347,7 @@ button{
 <!-- 10 -->
 <section class="slide"><div class="grid"></div><div class="layout">
   <div class="top"><div class="kicker">09 · Educación</div><div class="num">10 / 22</div></div>
+  <img class="image" style="position:absolute;right:6vw;bottom:7vh;width:23vw;height:17vh;opacity:.30;z-index:0;" src="https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=1000&q=85" alt="Estudiantes aprendiendo con tecnología">
   <div class="columns">
     <div>
       <h2>Aprender ya no ocurre solo en el aula</h2>
@@ -344,6 +376,7 @@ button{
 <!-- 12 -->
 <section class="slide"><div class="grid"></div><div class="layout">
   <div class="top"><div class="kicker">11 · Ingresos</div><div class="num">12 / 22</div></div>
+  <img class="image" style="position:absolute;right:6vw;bottom:7vh;width:23vw;height:17vh;opacity:.30;z-index:0;" src="https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?auto=format&fit=crop&w=1000&q=85" alt="Comercio electrónico y trabajo digital">
   <div class="columns">
     <div>
       <h2>Más de una forma de generar ingresos</h2>
@@ -472,6 +505,7 @@ button{
 <!-- 21 -->
 <section class="slide"><div class="grid"></div><div class="layout">
   <div class="top"><div class="kicker">20 · Futuro</div><div class="num">21 / 22</div></div>
+  <img class="image" style="position:absolute;right:6vw;top:14vh;width:22vw;height:20vh;opacity:.25;z-index:0;" src="https://images.unsplash.com/photo-1531482615713-2afd69097998?auto=format&fit=crop&w=1000&q=85" alt="Trabajo híbrido y tecnología">
   <div class="columns">
     <div>
       <h2>¿Hacia dónde va?</h2>
