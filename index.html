@@ -179,6 +179,30 @@ button{
   .visual-side img{height:22vh}
   .visual-stack .mini{height:16vh}
 }
+
+/* Visuales integrados: una imagen por diapositiva, sin elementos flotando encima del contenido */
+.visual-layout{
+  position:relative;z-index:2;height:100%;display:grid;grid-template-columns:1.02fr .98fr;gap:3.2vw;align-items:center;
+}
+.visual-copy{min-width:0}
+.visual-photo{
+  position:relative;width:100%;height:52vh;min-height:300px;overflow:hidden;border-radius:28px;
+  border:1px solid rgba(255,255,255,.11);box-shadow:0 22px 70px rgba(0,0,0,.38);
+  background:#111318;
+}
+.visual-photo img{width:100%;height:100%;object-fit:cover;display:block;filter:saturate(.92) contrast(1.04);}
+.visual-photo::after{
+  content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(8,9,12,.02) 35%,rgba(8,9,12,.58) 100%);pointer-events:none;
+}
+.visual-photo .photo-tag{
+  position:absolute;left:18px;bottom:16px;z-index:2;padding:8px 11px;border-radius:999px;
+  background:rgba(8,9,12,.72);border:1px solid rgba(255,255,255,.14);backdrop-filter:blur(8px);
+  color:#fff;font-size:12px;letter-spacing:.08em;text-transform:uppercase;font-weight:700;
+}
+@media(max-width:900px){
+  .visual-layout{grid-template-columns:1fr;gap:20px}
+  .visual-photo{height:31vh;min-height:190px}
+}
 </style>
 </head>
 <body>
@@ -245,18 +269,18 @@ button{
 <!-- 5 -->
 <section class="slide"><div class="grid"></div><div class="layout">
   <div class="top"><div class="kicker">04 · Redes</div><div class="num">05 / 22</div></div>
-  <img class="image" style="position:absolute;right:6vw;bottom:8vh;width:24vw;height:18vh;opacity:.30;z-index:0;object-position:center;" src="https://images.unsplash.com/photo-1611162617474-5b21e879e113?auto=format&fit=crop&w=1000&q=85" alt="Redes sociales y smartphone">
-  <div class="columns">
-    <div class="statbox"><div class="bigstat">4h 50m</div><div class="label">promedio diario de uso de redes sociales entre Gen Z en el estudio UFASTA 2025.</div><div class="source">UFASTA · 4.300 encuestas · 24 provincias</div></div>
-    <div>
+  <div class="visual-layout">
+    <div class="visual-copy">
       <h2>Las redes son mucho más que entretenimiento</h2>
-      <div class="cards">
+      <div class="statbox" style="margin-top:28px"><div class="bigstat">4h 50m</div><div class="label">promedio diario de uso de redes sociales entre Gen Z en el estudio UFASTA 2025.</div><div class="source">UFASTA · 4.300 encuestas · 24 provincias</div></div>
+      <div class="cards" style="margin-top:14px">
         <div class="card"><strong>3,72</strong><span>plataformas utilizadas en promedio.</span></div>
         <div class="card"><strong>38,1%</strong><span>uso principal: entretenimiento.</span></div>
         <div class="card"><strong>22,9%</strong><span>uso para informarse.</span></div>
         <div class="card"><strong>9,9%</strong><span>uso para crear contenido.</span></div>
       </div>
     </div>
+    <div class="visual-photo"><img src="https://images.unsplash.com/photo-1759932023688-9fa7516ddc6b?auto=format&fit=crop&w=1400&q=85" alt="Smartphone con redes sociales"><span class="photo-tag">redes · conexión · contenido</span></div>
   </div>
 </div></section>
 
@@ -347,19 +371,19 @@ button{
 <!-- 10 -->
 <section class="slide"><div class="grid"></div><div class="layout">
   <div class="top"><div class="kicker">09 · Educación</div><div class="num">10 / 22</div></div>
-  <img class="image" style="position:absolute;right:6vw;bottom:7vh;width:23vw;height:17vh;opacity:.30;z-index:0;" src="https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=1000&q=85" alt="Estudiantes aprendiendo con tecnología">
-  <div class="columns">
-    <div>
+  <div class="visual-layout">
+    <div class="visual-copy">
       <h2>Aprender ya no ocurre solo en el aula</h2>
       <p>Videos, cursos, tutoriales, comunidades online y herramientas de IA permiten aprender bajo demanda. El desafío es distinguir información útil de información falsa o superficial.</p>
       <div class="quote">Acceder a información es fácil. <span class="accent">Aprender a evaluarla</span> es otra cosa.</div>
+      <div class="cards" style="margin-top:25px">
+        <div class="card"><strong>Autodidacta</strong><span>Busca soluciones y explicaciones por cuenta propia.</span></div>
+        <div class="card"><strong>Visual</strong><span>Prefiere explicaciones rápidas, demostraciones y ejemplos.</span></div>
+        <div class="card"><strong>Inmediato</strong><span>Espera respuestas rápidas y accesibles.</span></div>
+        <div class="card"><strong>Crítico</strong><span>Necesita verificar fuentes y contexto.</span></div>
+      </div>
     </div>
-    <div class="cards">
-      <div class="card"><strong>Autodidacta</strong><span>Busca soluciones y explicaciones por cuenta propia.</span></div>
-      <div class="card"><strong>Visual</strong><span>Prefiere explicaciones rápidas, demostraciones y ejemplos.</span></div>
-      <div class="card"><strong>Inmediato</strong><span>Espera respuestas rápidas y accesibles.</span></div>
-      <div class="card"><strong>Crítico</strong><span>Necesita verificar fuentes y contexto.</span></div>
-    </div>
+    <div class="visual-photo"><img src="https://images.unsplash.com/photo-1758270705317-3ef6142d306f?auto=format&fit=crop&w=1400&q=85" alt="Estudiantes trabajando con una laptop"><span class="photo-tag">aprendizaje · tecnología</span></div>
   </div>
 </div></section>
 
@@ -376,18 +400,18 @@ button{
 <!-- 12 -->
 <section class="slide"><div class="grid"></div><div class="layout">
   <div class="top"><div class="kicker">11 · Ingresos</div><div class="num">12 / 22</div></div>
-  <img class="image" style="position:absolute;right:6vw;bottom:7vh;width:23vw;height:17vh;opacity:.30;z-index:0;" src="https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?auto=format&fit=crop&w=1000&q=85" alt="Comercio electrónico y trabajo digital">
-  <div class="columns">
-    <div>
+  <div class="visual-layout">
+    <div class="visual-copy">
       <h2>Más de una forma de generar ingresos</h2>
       <p>La idea de carrera puede combinar empleo formal con ecommerce, freelance, creación de contenido, servicios digitales o proyectos propios.</p>
+      <div class="cards" style="margin-top:28px">
+        <div class="card"><strong>Freelance</strong><span>Vender una habilidad directamente.</span></div>
+        <div class="card"><strong>E-commerce</strong><span>Vender productos sin depender de un local físico.</span></div>
+        <div class="card"><strong>Contenido</strong><span>Convertir audiencia y creatividad en actividad económica.</span></div>
+        <div class="card"><strong>Emprender</strong><span>Crear proyectos propios y aprender en el proceso.</span></div>
+      </div>
     </div>
-    <div class="cards">
-      <div class="card"><strong>Freelance</strong><span>Vender una habilidad directamente.</span></div>
-      <div class="card"><strong>E-commerce</strong><span>Vender productos sin depender de un local físico.</span></div>
-      <div class="card"><strong>Contenido</strong><span>Convertir audiencia y creatividad en actividad económica.</span></div>
-      <div class="card"><strong>Emprender</strong><span>Crear proyectos propios y aprender en el proceso.</span></div>
-    </div>
+    <div class="visual-photo"><img src="https://images.unsplash.com/photo-1770013413878-2530e2c3d82b?auto=format&fit=crop&w=1400&q=85" alt="Emprendedora gestionando un negocio online"><span class="photo-tag">e-commerce · freelance · emprendimiento</span></div>
   </div>
 </div></section>
 
@@ -505,18 +529,18 @@ button{
 <!-- 21 -->
 <section class="slide"><div class="grid"></div><div class="layout">
   <div class="top"><div class="kicker">20 · Futuro</div><div class="num">21 / 22</div></div>
-  <img class="image" style="position:absolute;right:6vw;top:14vh;width:22vw;height:20vh;opacity:.25;z-index:0;" src="https://images.unsplash.com/photo-1531482615713-2afd69097998?auto=format&fit=crop&w=1000&q=85" alt="Trabajo híbrido y tecnología">
-  <div class="columns">
-    <div>
+  <div class="visual-layout">
+    <div class="visual-copy">
       <h2>¿Hacia dónde va?</h2>
       <p>Hacia una vida cada vez más híbrida: estudio + tecnología, trabajo + proyectos, identidad + plataformas, experiencias físicas + digitales.</p>
+      <div class="cards" style="margin-top:28px">
+        <div class="card"><strong>IA integrada</strong><span>Como herramienta cotidiana, no como novedad.</span></div>
+        <div class="card"><strong>Trabajo híbrido</strong><span>Más combinación entre presencialidad y remoto.</span></div>
+        <div class="card"><strong>Habilidades humanas</strong><span>Comunicación, empatía, liderazgo y criterio ganan valor.</span></div>
+        <div class="card"><strong>Identidad flexible</strong><span>Más capacidad para mezclar comunidades, estilos y referencias.</span></div>
+      </div>
     </div>
-    <div class="cards">
-      <div class="card"><strong>IA integrada</strong><span>Como herramienta cotidiana, no como novedad.</span></div>
-      <div class="card"><strong>Trabajo híbrido</strong><span>Más combinación entre presencialidad y remoto.</span></div>
-      <div class="card"><strong>Habilidades humanas</strong><span>Comunicación, empatía, liderazgo y criterio ganan valor.</span></div>
-      <div class="card"><strong>Identidad flexible</strong><span>Más capacidad para mezclar comunidades, estilos y referencias.</span></div>
-    </div>
+    <div class="visual-photo"><img src="https://images.unsplash.com/photo-1758876016678-9e412ab12d9c?auto=format&fit=crop&w=1400&q=85" alt="Joven trabajando con tecnología"><span class="photo-tag">trabajo · tecnología · futuro</span></div>
   </div>
 </div></section>
 
