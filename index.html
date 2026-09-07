@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Generación Z — Radiografía de una generación</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap');
+
+:root{
+  --bg:#08090c; --panel:#111318; --text:#f4f5f7; --muted:#a6a9b3;
+  --lime:#c8ff3d; --cyan:#55d9ff; --pink:#ff5ebc; --orange:#ff9b4a;
+}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--text);font-family:"DM Sans",sans-serif}
+body{overflow:hidden}
+.deck{height:100vh;width:100vw;position:relative}
+.slide{
+  position:absolute;inset:0;display:none;overflow:hidden;
+  padding:5.5vh 6vw 4vh; background:var(--bg);
+}
+.slide.active{display:block}
+.slide::before{
+  content:"";position:absolute;width:45vw;height:45vw;right:-18vw;top:-18vw;
+  border-radius:50%;background:radial-gradient(circle,rgba(200,255,61,.12),transparent 65%);
+  pointer-events:none;
+}
+.grid{
+  position:absolute;inset:0;opacity:.08;pointer-events:none;
+  background-image:linear-gradient(rgba(255,255,255,.15) 1px,transparent 1px),
+  linear-gradient(90deg,rgba(255,255,255,.15) 1px,transparent 1px);
+  background-size:55px 55px;
+}
+.kicker{font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:var(--lime);font-weight:700;margin-bottom:18px}
+h1,h2,h3{font-family:"Space Grotesk",sans-serif;margin:0;letter-spacing:-.045em}
+h1{font-size:clamp(50px,7.5vw,112px);line-height:.9;max-width:1050px}
+h2{font-size:clamp(34px,5vw,72px);line-height:.94;max-width:900px}
+h3{font-size:25px;line-height:1.05}
+p{font-size:18px;line-height:1.45;color:#d4d6dc;max-width:760px}
+.small{font-size:13px;color:var(--muted)}
+.hero{
+  min-height:100%;display:flex;flex-direction:column;justify-content:center;
+  position:relative;z-index:2;
+}
+.hero .tag{margin-top:34px;font-size:15px;color:#cdd0d7}
+.hero-img{
+  position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.43;
+  filter:saturate(.9) contrast(1.08);
+}
+.overlay{position:absolute;inset:0;background:linear-gradient(90deg,rgba(8,9,12,.96) 0%,rgba(8,9,12,.74) 46%,rgba(8,9,12,.35) 100%)}
+.layout{position:relative;z-index:2;height:100%;display:flex;flex-direction:column}
+.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:30px}
+.num{font-family:"Space Grotesk";font-size:14px;color:#777b86}
+.columns{display:grid;grid-template-columns:1.05fr .95fr;gap:4vw;align-items:center;height:100%}
+.cards{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin-top:28px}
+.card{
+  background:rgba(255,255,255,.055);border:1px solid rgba(255,255,255,.09);
+  border-radius:22px;padding:22px;backdrop-filter:blur(10px)
+}
+.card strong{display:block;font-family:"Space Grotesk";font-size:22px;margin-bottom:7px}
+.card span{color:#b8bbc4;font-size:14px;line-height:1.35}
+.bigstat{font-family:"Space Grotesk";font-size:clamp(58px,8vw,115px);line-height:.85;color:var(--lime);font-weight:700}
+.statbox{background:#111318;border-radius:28px;padding:34px;border:1px solid #242831}
+.statbox .label{margin-top:15px;color:#c9ccd3;font-size:16px}
+.image{
+  width:100%;height:52vh;object-fit:cover;border-radius:30px;
+  border:1px solid rgba(255,255,255,.1);box-shadow:0 20px 70px rgba(0,0,0,.35)
+}
+.quote{
+  border-left:4px solid var(--lime);padding:8px 0 8px 22px;
+  font-family:"Space Grotesk";font-size:clamp(25px,3vw,42px);line-height:1.05;
+  max-width:850px
+}
+.pills{display:flex;flex-wrap:wrap;gap:9px;margin-top:25px}
+.pill{padding:9px 13px;border:1px solid #30343d;border-radius:999px;color:#e5e7eb;font-size:14px;background:#111318}
+.timeline{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:35px}
+.time{padding:20px;border-top:2px solid #3b3e47;background:linear-gradient(180deg,#13151a,transparent);min-height:130px}
+.time b{font-family:"Space Grotesk";font-size:26px;color:var(--lime)}
+.time p{font-size:14px;color:#aeb1ba;margin-top:9px}
+.footer{
+  position:absolute;left:6vw;right:6vw;bottom:18px;display:flex;justify-content:space-between;
+  color:#666a75;font-size:10px;z-index:4
+}
+.nav{
+  position:fixed;right:22px;top:50%;transform:translateY(-50%);z-index:20;
+  display:flex;flex-direction:column;gap:7px
+}
+.dot{width:7px;height:7px;border-radius:50%;background:#444851;cursor:pointer;transition:.2s}
+.dot.active{background:var(--lime);transform:scale(1.5)}
+.controls{position:fixed;left:50%;bottom:17px;transform:translateX(-50%);z-index:20;display:flex;gap:7px}
+button{
+  border:1px solid #343740;background:rgba(12,13,17,.8);color:#dfe1e6;border-radius:10px;
+  padding:8px 11px;cursor:pointer
+}
+.source{font-size:10px;color:#666b76;margin-top:18px}
+.accent{color:var(--lime)} .cyan{color:var(--cyan)} .pink{color:var(--pink)} .orange{color:var(--orange)}
+.full{max-width:1100px}
+@media(max-width:800px){
+  .slide{padding:7vh 7vw 5vh}
+  .columns{grid-template-columns:1fr;gap:20px}
+  .image{height:30vh}
+  .cards{grid-template-columns:1fr}
+  .timeline{grid-template-columns:1fr 1fr}
+  .nav{display:none}
+}
+
+.img-fallback{width:100%;height:52vh;border-radius:30px;border:1px solid rgba(255,255,255,.1);background:radial-gradient(circle at 70% 30%,rgba(200,255,61,.15),transparent 35%),#111318;display:flex;flex-direction:column;align-items:center;justify-content:center;font-family:"Space Grotesk",sans-serif}.img-fallback span{font-size:70px;color:var(--lime);font-weight:700;letter-spacing:-.06em}.img-fallback small{font-family:"DM Sans";color:#777b86;margin-top:8px}@media(max-width:800px){.img-fallback{height:30vh}}
+</style>
+</head>
+<body>
+<div class="deck">
+
+<!-- 1 -->
+<section class="slide active">
+  <img class="hero-img" src="https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&w=1800&q=85">
+  <div class="overlay"></div><div class="grid"></div>
+  <div class="hero">
+    <div class="kicker">Trabajo escolar · Generaciones</div>
+    <h1>GENERACIÓN<br><span class="accent">Z</span></h1>
+    <p class="full">La generación que creció con Internet y terminó cambiando la forma de comunicarnos, vestirnos, consumir, estudiar, trabajar y relacionarnos.</p>
+    <div class="tag">Una radiografía cultural, digital y social.</div>
+  </div>
+  <div class="footer"><span>GENERACIÓN Z</span><span>01 / 22</span></div>
+</section>
+
+<!-- 2 -->
+<section class="slide"><div class="grid"></div><div class="layout">
+  <div class="top"><div class="kicker">01 · Identidad</div><div class="num">02 / 22</div></div>
+  <div class="columns">
+    <div>
+      <h2>¿Quiénes son?</h2>
+      <p>No existe una única frontera universal para definirla. Según la fuente, aparecen rangos como 1993–2010, 1995–2012 o desde 1996.</p>
+      <div class="quote">Más que un año de nacimiento, importa el <span class="accent">mundo en el que crecieron.</span></div>
+    </div>
+    <div class="cards">
+      <div class="card"><strong>Internet</strong><span>Forma parte del entorno cotidiano desde edades tempranas.</span></div>
+      <div class="card"><strong>Smartphone</strong><span>La comunicación, el entretenimiento y la información pasan por una pantalla.</span></div>
+      <div class="card"><strong>Globalización</strong><span>Las tendencias culturales circulan casi instantáneamente.</span></div>
+      <div class="card"><strong>No son iguales</strong><span>La generación contiene diferencias sociales, culturales y económicas.</span></div>
+    </div>
+  </div>
+</div></section>
+
+<!-- 3 -->
+<section class="slide"><div class="grid"></div><div class="layout">
+  <div class="top"><div class="kicker">02 · Contexto</div><div class="num">03 / 22</div></div>
+  <div class="hero">
+    <h2>El mundo en el que nacieron</h2>
+    <div class="timeline">
+      <div class="time"><b>Internet</b><p>De herramienta a infraestructura cotidiana.</p></div>
+      <div class="time"><b>Redes</b><p>La vida social se vuelve también digital.</p></div>
+      <div class="time"><b>Pandemia</b><p>La pantalla pasa a ser aula, oficina y punto de encuentro.</p></div>
+      <div class="time"><b>IA</b><p>La inteligencia artificial aparece durante su transición a la adultez.</p></div>
+    </div>
+    <p class="source">La generación no surge aislada: responde a transformaciones tecnológicas, económicas y culturales.</p>
+  </div>
+</div></section>
+
+<!-- 4 -->
+<section class="slide"><div class="grid"></div><div class="layout">
+  <div class="top"><div class="kicker">03 · Tecnología</div><div class="num">04 / 22</div></div>
+  <div class="columns">
+    <div>
+      <h2>La primera generación realmente <span class="cyan">digital</span></h2>
+      <p>El material de clase describe a la Gen Z como autodidacta y tecnológicamente hábil. Pero ser “nativo digital” no significa saber usar cualquier tecnología: también exige aprender a seleccionar, verificar y entender información.</p>
+      <div class="pills"><span class="pill">tutoriales</span><span class="pill">búsqueda instantánea</span><span class="pill">contenido visual</span><span class="pill">multitarea</span><span class="pill">creación de contenido</span></div>
+    </div>
+    <img class="image" src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=1600&q=85">
+  </div>
+</div></section>
+
+<!-- 5 -->
+<section class="slide"><div class="grid"></div><div class="layout">
+  <div class="top"><div class="kicker">04 · Redes</div><div class="num">05 / 22</div></div>
+  <div class="columns">
+    <div class="statbox"><div class="bigstat">4h 50m</div><div class="label">promedio diario de uso de redes sociales entre Gen Z en el estudio UFASTA 2025.</div><div class="source">UFASTA · 4.300 encuestas · 24 provincias</div></div>
+    <div>
+      <h2>Las redes son mucho más que entretenimiento</h2>
+      <div class="cards">
+        <div class="card"><strong>3,72</strong><span>plataformas utilizadas en promedio.</span></div>
+        <div class="card"><strong>38,1%</strong><span>uso principal: entretenimiento.</span></div>
+        <div class="card"><strong>22,9%</strong><span>uso para informarse.</span></div>
+        <div class="card"><strong>9,9%</strong><span>uso para crear contenido.</span></div>
+      </div>
+    </div>
+  </div>
+</div></section>
+
+<!-- 6 -->
+<section class="slide"><div class="grid"></div><div class="layout">
+  <div class="top"><div class="kicker">05 · Lenguaje</div><div class="num">06 / 22</div></div>
+  <div class="hero">
+    <h2>Hablar también es pertenecer</h2>
+    <p>La comunicación incorpora memes, abreviaciones, referencias virales, emojis, palabras en inglés y expresiones que cambian muy rápido.</p>
+    <div class="pills">
+      <span class="pill">POV</span><span class="pill">cringe</span><span class="pill">random</span><span class="pill">bro</span>
+      <span class="pill">aesthetic</span><span class="pill">delulu</span><span class="pill">meme</span><span class="pill">sticker</span>
+    </div>
+    <div class="quote" style="margin-top:45px">El lenguaje digital no solo transmite información: también marca <span class="accent">comunidad, humor e identidad.</span></div>
+  </div>
+</div></section>
+
+<!-- 7 -->
+<section class="slide"><img class="hero-img" src="https://images.unsplash.com/photo-1524368535928-5b5e00ddc76b?auto=format&fit=crop&w=1800&q=85"><div class="overlay"></div><div class="layout">
+  <div class="top"><div class="kicker">06 · Música</div><div class="num">07 / 22</div></div>
+  <div class="hero">
+    <h2>Un mundo sin fronteras musicales</h2>
+    <p>Streaming, TikTok, YouTube, playlists y fandoms cambiaron cómo descubrimos canciones. En Argentina conviven cumbia, RKT, reggaetón, trap, cuarteto, rock y electrónica.</p>
+    <div class="pills"><span class="pill">cumbia</span><span class="pill">RKT</span><span class="pill">reggaetón</span><span class="pill">trap</span><span class="pill">cuarteto</span><span class="pill">rock</span></div>
+    <div class="source">En 2025, rankings de YouTube en Argentina mostraron el fuerte peso de cumbia, reggaetón y RKT.</div>
+  </div>
+</div></section>
+
+<!-- 8 -->
+<section class="slide"><div class="grid"></div><div class="layout">
+  <div class="top"><div class="kicker">07 · Moda</div><div class="num">08 / 22</div></div>
+  <div class="columns">
+    <img class="image" src="https://images.unsplash.com/photo-1529139574466-a303027c1d8b?auto=format&fit=crop&w=1600&q=85">
+    <div>
+      <h2>Vestirse es construir identidad</h2>
+      <p>Oversize, streetwear, vintage, Y2K, prendas deportivas y mezclas de décadas. Las redes aceleran las tendencias, pero también permiten recuperar estilos y reinterpretarlos.</p>
+      <div class="pills"><span class="pill">Y2K</span><span class="pill">streetwear</span><span class="pill">vintage</span><span class="pill">oversize</span><span class="pill">Argentina core</span></div>
+    </div>
+  </div>
+</div></section>
+
+<!-- 9 -->
+<section class="slide"><div class="grid"></div><div class="layout">
+  <div class="top"><div class="kicker">08 · Consumo</div><div class="num">09 / 22</div></div>
+  <div class="hero">
+    <h2>Comprar también comunica</h2>
+    <p>La decisión de compra se mezcla con influencers, reseñas, tendencias, amigos, algoritmos y la identidad de una marca.</p>
+    <div class="cards">
+      <div class="card"><strong>Descubrir</strong><span>Una tendencia puede aparecer primero en un feed.</span></div>
+      <div class="card"><strong>Comparar</strong><span>Reviews y comentarios forman parte de la decisión.</span></div>
+      <div class="card"><strong>Identificarse</strong><span>La marca puede funcionar como señal de identidad.</span></div>
+      <div class="card"><strong>Compartir</strong><span>La experiencia también se convierte en contenido.</span></div>
+    </div>
+  </div>
+</div></section>
+
+<!-- 10 -->
+<section class="slide"><div class="grid"></div><div class="layout">
+  <div class="top"><div class="kicker">09 · Educación</div><div class="num">10 / 22</div></div>
+  <div class="columns">
+    <div>
+      <h2>Aprender ya no ocurre solo en el aula</h2>
+      <p>Videos, cursos, tutoriales, comunidades online y herramientas de IA permiten aprender bajo demanda. El desafío es distinguir información útil de información falsa o superficial.</p>
+      <div class="quote">Acceder a información es fácil. <span class="accent">Aprender a evaluarla</span> es otra cosa.</div>
+    </div>
+    <div class="cards">
+      <div class="card"><strong>Autodidacta</strong><span>Busca soluciones y explicaciones por cuenta propia.</span></div>
+      <div class="card"><strong>Visual</strong><span>Prefiere explicaciones rápidas, demostraciones y ejemplos.</span></div>
+      <div class="card"><strong>Inmediato</strong><span>Espera respuestas rápidas y accesibles.</span></div>
+      <div class="card"><strong>Crítico</strong><span>Necesita verificar fuentes y contexto.</span></div>
+    </div>
+  </div>
+</div></section>
+
+<!-- 11 -->
+<section class="slide"><div class="grid"></div><div class="layout">
+  <div class="top"><div class="kicker">10 · Trabajo</div><div class="num">11 / 22</div></div>
+  <div class="hero">
+    <h2>¿Menos trabajo o una idea distinta de trabajo?</h2>
+    <p>La Gen Z valora flexibilidad, desarrollo profesional, equilibrio entre vida y trabajo y posibilidades de aprendizaje. El trabajo remoto, híbrido, freelance y por proyectos amplía las opciones.</p>
+    <div class="pills"><span class="pill">flexibilidad</span><span class="pill">work-life balance</span><span class="pill">aprendizaje</span><span class="pill">autonomía</span><span class="pill">propósito</span></div>
+  </div>
+</div></section>
+
+<!-- 12 -->
+<section class="slide"><div class="grid"></div><div class="layout">
+  <div class="top"><div class="kicker">11 · Ingresos</div><div class="num">12 / 22</div></div>
+  <div class="columns">
+    <div>
+      <h2>Más de una forma de generar ingresos</h2>
+      <p>La idea de carrera puede combinar empleo formal con ecommerce, freelance, creación de contenido, servicios digitales o proyectos propios.</p>
+    </div>
+    <div class="cards">
+      <div class="card"><strong>Freelance</strong><span>Vender una habilidad directamente.</span></div>
+      <div class="card"><strong>E-commerce</strong><span>Vender productos sin depender de un local físico.</span></div>
+      <div class="card"><strong>Contenido</strong><span>Convertir audiencia y creatividad en actividad económica.</span></div>
+      <div class="card"><strong>Emprender</strong><span>Crear proyectos propios y aprender en el proceso.</span></div>
+    </div>
+  </div>
+</div></section>
+
+<!-- 13 -->
+<section class="slide"><div class="grid"></div><div class="layout">
+  <div class="top"><div class="kicker">12 · Valores</div><div class="num">13 / 22</div></div>
+  <div class="hero">
+    <h2>Una generación expuesta a más causas y más conflictos</h2>
+    <p>El material de clase destaca conciencia social, solidaridad e intolerancia frente a la corrupción. La conexión global facilita conocer problemas ambientales, sociales y humanitarios.</p>
+    <div class="quote" style="margin-top:35px">Pero estar informado de todo también puede producir <span class="pink">saturación.</span></div>
+  </div>
+</div></section>
+
+<!-- 14 -->
+<section class="slide"><img class="hero-img" src="https://images.unsplash.com/photo-1529156069898-49953e39b3ac?auto=format&fit=crop&w=1800&q=85"><div class="overlay"></div><div class="grid"></div><div class="layout">
+  <div class="top"><div class="kicker">13 · Relaciones</div><div class="num">14 / 22</div></div>
+  <div class="hero">
+    <h2>Una generación <span class="cyan">híbrida</span></h2>
+    <p>Lo digital no reemplaza necesariamente lo presencial. Las amistades, grupos, fandoms y comunidades pueden existir simultáneamente online y offline.</p>
+    <div class="pills"><span class="pill">chat</span><span class="pill">grupo de amigos</span><span class="pill">gaming</span><span class="pill">fandom</span><span class="pill">encuentro presencial</span></div>
+  </div>
+</div></section>
+
+<!-- 15 -->
+<section class="slide"><div class="grid"></div><div class="layout">
+  <div class="top"><div class="kicker">14 · Pandemia</div><div class="num">15 / 22</div></div>
+  <div class="hero">
+    <h2>La pandemia no creó a la Gen Z. <span class="accent">Aceleró tendencias.</span></h2>
+    <div class="cards">
+      <div class="card"><strong>Educación</strong><span>Más dependencia de plataformas y recursos digitales.</span></div>
+      <div class="card"><strong>Socialización</strong><span>Videollamadas, chats y comunidades online.</span></div>
+      <div class="card"><strong>Entretenimiento</strong><span>Streaming, gaming y redes como espacios centrales.</span></div>
+      <div class="card"><strong>Hábitos</strong><span>Mayor naturalización de la vida mediada por pantallas.</span></div>
+    </div>
+  </div>
+</div></section>
+
+<!-- 16 -->
+<section class="slide"><div class="grid"></div><div class="layout">
+  <div class="top"><div class="kicker">15 · Inteligencia artificial</div><div class="num">16 / 22</div></div>
+  <div class="columns">
+    <div>
+      <h2>La IA es el próximo gran cambio</h2>
+      <p>Para esta generación, la IA aparece durante la etapa de estudio y entrada al mundo laboral. Puede ayudar a investigar, traducir, programar, generar ideas y producir contenido.</p>
+      <div class="quote">El desafío no es usar IA. Es <span class="accent">saber cuándo, cómo y para qué usarla.</span></div>
+    </div>
+    <div class="statbox">
+      <div class="bigstat">57%</div>
+      <div class="label">de Gen Z encuestada por Deloitte dijo usar IA generativa en su trabajo cotidiano en alguna medida.</div>
+      <div class="source">Deloitte Gen Z & Millennial Survey 2025</div>
+    </div>
+  </div>
+</div></section>
+
+<!-- 17 -->
+<section class="slide"><div class="grid"></div><div class="layout">
+  <div class="top"><div class="kicker">16 · Contradicciones</div><div class="num">17 / 22</div></div>
+  <div class="hero">
+    <h2>La Gen Z está llena de contradicciones</h2>
+    <div class="cards">
+      <div class="card"><strong>Hiperconectada ↔ presencial</strong><span>Usa redes constantemente, pero también busca experiencias reales.</span></div>
+      <div class="card"><strong>Libertad ↔ estabilidad</strong><span>Quiere autonomía, pero también seguridad económica.</span></div>
+      <div class="card"><strong>Autenticidad ↔ identidad curada</strong><span>Busca mostrarse como es dentro de plataformas diseñadas para exhibirse.</span></div>
+      <div class="card"><strong>Información ↔ saturación</strong><span>Tiene acceso a todo, pero filtrar se vuelve cada vez más difícil.</span></div>
+    </div>
+  </div>
+</div></section>
+
+<!-- 18 -->
+<section class="slide"><div class="grid"></div><div class="layout">
+  <div class="top"><div class="kicker">17 · Comparación</div><div class="num">18 / 22</div></div>
+  <div class="hero">
+    <h2>Gen Z frente a otras generaciones</h2>
+    <p>No se trata de decidir qué generación es “mejor”. Cada una fue formada por contextos diferentes.</p>
+    <div class="timeline">
+      <div class="time"><b>Baby Boomers</b><p>Televisión, estabilidad laboral como ideal.</p></div>
+      <div class="time"><b>Gen X</b><p>Transición entre mundo analógico y digital.</p></div>
+      <div class="time"><b>Millennials</b><p>Internet durante la adolescencia y juventud.</p></div>
+      <div class="time"><b>Gen Z</b><p>Internet, smartphone y redes desde temprano.</p></div>
+    </div>
+  </div>
+</div></section>
+
+<!-- 19 -->
+<section class="slide"><div class="grid"></div><div class="layout">
+  <div class="top"><div class="kicker">18 · Fortalezas</div><div class="num">19 / 22</div></div>
+  <div class="columns">
+    <div>
+      <h2>¿Qué aporta la Gen Z?</h2>
+      <div class="cards">
+        <div class="card"><strong>Adaptabilidad</strong><span>Se mueve entre plataformas y formatos.</span></div>
+        <div class="card"><strong>Iniciativa</strong><span>Busca crear, probar y resolver.</span></div>
+        <div class="card"><strong>Creatividad</strong><span>Combina referencias y produce contenido.</span></div>
+        <div class="card"><strong>Conciencia social</strong><span>Mayor exposición a causas y debates globales.</span></div>
+      </div>
+    </div>
+    <div class="statbox"><div class="bigstat">∞</div><div class="label">posibilidades de aprender, crear y conectar cuando las herramientas digitales se usan con criterio.</div></div>
+  </div>
+</div></section>
+
+<!-- 20 -->
+<section class="slide"><div class="grid"></div><div class="layout">
+  <div class="top"><div class="kicker">19 · Desafíos</div><div class="num">20 / 22</div></div>
+  <div class="hero">
+    <h2>¿Qué problemas enfrenta?</h2>
+    <div class="cards">
+      <div class="card"><strong>Saturación</strong><span>Demasiada información, estímulos y tendencias simultáneas.</span></div>
+      <div class="card"><strong>Comparación</strong><span>La identidad se construye frente a vidas cuidadosamente mostradas.</span></div>
+      <div class="card"><strong>Impaciencia</strong><span>La inmediatez digital puede aumentar la expectativa de respuestas rápidas.</span></div>
+      <div class="card"><strong>Incertidumbre</strong><span>Estudio, trabajo, economía y tecnología cambian rápidamente.</span></div>
+    </div>
+  </div>
+</div></section>
+
+<!-- 21 -->
+<section class="slide"><div class="grid"></div><div class="layout">
+  <div class="top"><div class="kicker">20 · Futuro</div><div class="num">21 / 22</div></div>
+  <div class="columns">
+    <div>
+      <h2>¿Hacia dónde va?</h2>
+      <p>Hacia una vida cada vez más híbrida: estudio + tecnología, trabajo + proyectos, identidad + plataformas, experiencias físicas + digitales.</p>
+    </div>
+    <div class="cards">
+      <div class="card"><strong>IA integrada</strong><span>Como herramienta cotidiana, no como novedad.</span></div>
+      <div class="card"><strong>Trabajo híbrido</strong><span>Más combinación entre presencialidad y remoto.</span></div>
+      <div class="card"><strong>Habilidades humanas</strong><span>Comunicación, empatía, liderazgo y criterio ganan valor.</span></div>
+      <div class="card"><strong>Identidad flexible</strong><span>Más capacidad para mezclar comunidades, estilos y referencias.</span></div>
+    </div>
+  </div>
+</div></section>
+
+<!-- 22 -->
+<section class="slide"><img class="hero-img" src="https://images.unsplash.com/photo-1521737711867-e3b97375f902?auto=format&fit=crop&w=1800&q=85"><div class="overlay"></div><div class="grid"></div><div class="hero">
+  <div class="kicker">21 · Cierre</div>
+  <h2>La Generación Z no es solo una generación de TikTok.</h2>
+  <p>Es el resultado de crecer en un mundo donde lo digital dejó de ser una herramienta y pasó a formar parte del entorno social, cultural y laboral.</p>
+  <div class="quote" style="margin-top:30px">¿Está cambiando el mundo porque es diferente, o es diferente porque el mundo en el que creció la obligó a cambiar?</div>
+  <div class="tag">Fin · Gracias</div>
+  <div class="footer"><span>Fuentes: UFASTA · Deloitte · materiales de clase · medios argentinos</span><span>22 / 22</span></div>
+</div></section>
+
+</div>
+
+<div class="nav" id="nav"></div>
+<div class="controls">
+  <button onclick="prev()">←</button><button onclick="next()">→</button>
+</div>
+
+<script>document.querySelectorAll("img").forEach(img=>img.addEventListener("error",()=>{if(img.dataset.failed)return;img.dataset.failed="1";img.style.display="none";const f=document.createElement("div");f.className="img-fallback";f.innerHTML="<span>GEN Z</span><small>radiografía de una generación</small>";img.parentNode.insertBefore(f,img.nextSibling);}));</script>
+<script>
+const slides=[...document.querySelectorAll('.slide')];
+const nav=document.getElementById('nav');
+let i=0;
+slides.forEach((_,n)=>{
+  const d=document.createElement('div'); d.className='dot'+(n===0?' active':'');
+  d.onclick=()=>go(n); nav.appendChild(d);
+});
+function go(n){
+  i=(n+slides.length)%slides.length;
+  slides.forEach((s,k)=>s.classList.toggle('active',k===i));
+  [...nav.children].forEach((d,k)=>d.classList.toggle('active',k===i));
+}
+function next(){go(i+1)}
+function prev(){go(i-1)}
+document.addEventListener('keydown',e=>{
+  if(['ArrowRight','PageDown',' '].includes(e.key)){e.preventDefault();next()}
+  if(['ArrowLeft','PageUp'].includes(e.key)){e.preventDefault();prev()}
+  if(e.key==='Home')go(0);
+  if(e.key==='End')go(slides.length-1);
+});
+let sx=null;
+document.addEventListener('touchstart',e=>sx=e.touches[0].clientX,{passive:true});
+document.addEventListener('touchend',e=>{
+  if(sx===null)return; const dx=e.changedTouches[0].clientX-sx;
+  if(Math.abs(dx)>60) dx<0?next():prev(); sx=null;
+},{passive:true});
+</script>
+</body>
+</html>
